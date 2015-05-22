@@ -1,0 +1,7 @@
+name: RecipeFinder
+version: 1.8.4
+main: org.noip.olyol95.recipefinder.RecipeFinder
+commands:
+   recipe:
+      description: Look up the recipe of an item.
+      usage: /recipe <item name>
