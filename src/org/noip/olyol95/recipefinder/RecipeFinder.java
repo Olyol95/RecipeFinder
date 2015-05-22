@@ -1,7 +1,6 @@
 package org.noip.olyol95.recipefinder;
 
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R2.Item;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
