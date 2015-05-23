@@ -188,6 +188,7 @@ public class RecipeFinder extends JavaPlugin {
                 } else {
 
                     sender.sendMessage(ChatColor.RED+"You do not have permission to do this!");
+                    return true;
 
                 }
 
