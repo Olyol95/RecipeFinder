@@ -2,10 +2,9 @@ package org.noip.olyol95.recipefinder;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -14,10 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.noip.olyol95.recipefinder.listeners.InventoryListener;
 import org.noip.olyol95.recipefinder.listeners.PlayerListener;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Recipe Finder plugin for Bukkit/Spigot
@@ -42,7 +38,10 @@ public class RecipeFinder extends JavaPlugin {
 
     private static RecipeFinder plugin;
 
+    private static final char[] capitals = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+
     Hashtable<UUID,DisplayThread> usersThreads;
+    Hashtable<String,String> replacements;
 
     @Override
     public void onEnable() {
@@ -50,6 +49,7 @@ public class RecipeFinder extends JavaPlugin {
         plugin = this;
 
         usersThreads = new Hashtable<>();
+        replacements = setupReplacements();
 
         final PluginManager pluginManager = getServer().getPluginManager();
 
@@ -68,6 +68,7 @@ public class RecipeFinder extends JavaPlugin {
         }
 
         usersThreads = null;
+        replacements = null;
 
         plugin = null;
 
@@ -208,18 +209,52 @@ public class RecipeFinder extends JavaPlugin {
 
         itemName = itemName.toLowerCase();
 
-        for (Material material : Material.values()) {
+        Iterator<Recipe> recipeIterator = getServer().recipeIterator();
 
-            String materialName = material.toString().toLowerCase().replace("item", "").replace("_", " ");
+        while (recipeIterator.hasNext()) {
+
+            Recipe recipe = recipeIterator.next();
+
+            String name = CraftItemStack.asNMSCopy(recipe.getResult()).a();
+
+            for (String occurance: replacements.keySet()) {
+
+                name = name.replaceAll(occurance,replacements.get(occurance));
+
+            }
+
+            String[] words = name.split("\\.");
+
+            ArrayList<String> newWords = new ArrayList<>();
+
+            for (int i = 1; i < words.length; i++) {
+
+                String word = "";
+
+                for (char c: words[i].toCharArray()) {
+
+                    if (isCapitalChar(c)) {
+
+                        newWords.add(word.toLowerCase());
+                        word = "";
+
+                    }
+
+                    word = word + c;
+
+                }
+
+                newWords.add(word.toLowerCase());
+
+            }
 
             String[] itemWords = itemName.split(" ");
-            String[] materialWords = materialName.split(" ");
 
             double degree = 0;
 
             for (String itemWord : itemWords) {
 
-                for (String materialWord : materialWords) {
+                for (String materialWord : newWords) {
 
                     if (materialWord.contains(itemWord)) {
 
@@ -237,82 +272,57 @@ public class RecipeFinder extends JavaPlugin {
 
             if (degree > 75.0) {
 
-                List<Recipe> materialRecipes = Bukkit.getRecipesFor(new ItemStack(material));
-
-                for (Recipe recipe : materialRecipes) {
-
-                    recipes.add(recipe);
-
-                }
-
-            }
-
-        }
-
-        for (DyeColor colour: DyeColor.values()) {
-
-            String[] itemWords = itemName.split(" ");
-            String[] materialWords;
-
-            for (int i = 0; i < 2; i++) {
-
-                if (i == 0) {
-
-                    materialWords = (colour.toString().toLowerCase().replace("_"," ") + " wool").split(" ");
-
-                } else {
-
-                    materialWords = (colour.toString().toLowerCase().replace("_"," ") + " dye").split(" ");
-
-                }
-
-                double degree = 0;
-
-                for (String itemWord : itemWords) {
-
-                    for (String materialWord : materialWords) {
-
-                        if (materialWord.contains(itemWord)) {
-
-                            degree += ((double) itemWord.length() / materialWord.length()) * (100 / itemWords.length);
-
-                        } else if (itemWord.contains(materialWord)) {
-
-                            degree += ((double) materialWord.length() / itemWord.length()) * (100 / itemWords.length);
-
-                        }
-
-                    }
-
-                }
-
-                if (degree > 75.0) {
-
-                    List<Recipe> materialRecipes;
-
-                    if (i == 0) {
-
-                        materialRecipes = Bukkit.getRecipesFor(new ItemStack(Material.WOOL, 1, colour.getData()));
-
-                    } else {
-
-                        materialRecipes = Bukkit.getRecipesFor(new ItemStack(Material.INK_SACK, 1, (byte) (15 - colour.getData())));
-
-                    }
-
-                    for (Recipe recipe : materialRecipes) {
-
-                        recipes.add(recipe);
-
-                    }
-
-                }
+               recipes.add(recipe);
 
             }
 
         }
 
         return recipes;
+
+    }
+
+    private boolean isCapitalChar(char c) {
+
+        for (char capital: capitals) {
+
+            if (c == capital) return true;
+
+        }
+
+        return false;
+
+    }
+
+    public Hashtable<String,String> setupReplacements() {
+
+        Hashtable<String,String> hashtable = new Hashtable<>();
+
+        hashtable.put("Light","Lamp");
+        hashtable.put("chestplateCloth","chestplateLeather");
+        hashtable.put("leggingsCloth","leggingsLeather");
+        hashtable.put("helmetCloth","helmetLeather");
+        hashtable.put("bootsCloth","bootsLeather");
+        hashtable.put("musicBlock","noteBlock");
+        hashtable.put("sparkling","glistering");
+        hashtable.put("hatchet","axe");
+        hashtable.put("lightgem","glowstone");
+        hashtable.put("cloth","wool");
+        hashtable.put("stoneSlab2","stoneSlab");
+        hashtable.put("red_sandstone","redSandstone");
+        hashtable.put("big_oak","darkOak");
+        hashtable.put("stonebricksmooth","stoneBrickSmooth");
+        hashtable.put("notGate","redstoneTorch");
+        hashtable.put("weightedPlate_heavy","ironPressurePlate");
+        hashtable.put("weightedPlate_light","goldPressurePlate");
+        hashtable.put("seeds_melon","melonSeeds");
+        hashtable.put("seeds_pumpkin","pumpkinSeeds");
+        hashtable.put("stoneMoss","mossyCobblestone");
+        hashtable.put("netherquartz","netherQuartz");
+        hashtable.put("fireball","fireCharge");
+        hashtable.put("litpumpkin","jackOLantern");
+
+        return hashtable;
 
     }
 

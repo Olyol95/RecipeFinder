@@ -1,7 +1,6 @@
 package org.noip.olyol95.recipefinder;
 
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
@@ -48,12 +47,12 @@ public class DisplayThread extends Thread {
         if (recipes.get(0) instanceof FurnaceRecipe) {
 
             inventory = Bukkit.createInventory(player, InventoryType.FURNACE, "recipe");
-            inventory.setItem(2,generateItemStack(recipes.get(0).getResult()));
+            inventory.setItem(2, sanitiseItemStack(recipes.get(0).getResult()));
 
         } else {
 
             inventory = Bukkit.createInventory(player, InventoryType.WORKBENCH, "recipe");
-            inventory.setItem(0,generateItemStack(recipes.get(0).getResult()));
+            inventory.setItem(0, sanitiseItemStack(recipes.get(0).getResult()));
 
         }
 
@@ -87,20 +86,9 @@ public class DisplayThread extends Thread {
 
                 FurnaceRecipe furnaceRecipe = (FurnaceRecipe) recipe;
 
-                inventoryView.setItem(0, generateItemStack(furnaceRecipe.getInput()));
+                inventoryView.setItem(0, sanitiseItemStack(furnaceRecipe.getInput()));
                 inventoryView.setItem(1, new ItemStack(fuels[fuelCounter]));
-
-                ItemStack result = generateItemStack(furnaceRecipe.getResult());
-
-                if (result.getType().toString().equalsIgnoreCase("INK_SACK")) {
-
-                    String dyeType = result.getData().toString().split(" ")[0];
-                    byte data = (byte) (15 - DyeColor.valueOf(dyeType).getData());
-                    result = new ItemStack(Material.INK_SACK,result.getAmount(),data);
-
-                }
-
-                inventory.setItem(2, result);
+                inventory.setItem(2, sanitiseItemStack(furnaceRecipe.getResult()));
 
                 if (fuelCounter + 1 == fuels.length) {
 
@@ -138,15 +126,7 @@ public class DisplayThread extends Thread {
 
                         for (int x = 0; x < shape[i].length(); x++) {
 
-                            ItemStack ingredient = generateItemStack(shapedRecipe.getIngredientMap().get(shape[i].toCharArray()[x]));
-
-                            if (ingredient.getType().toString().equalsIgnoreCase("INK_SACK")) {
-
-                                String dyeType = ingredient.getData().toString().split(" ")[0];
-                                byte data = (byte) (15 - DyeColor.valueOf(dyeType).getData());
-                                ingredient = new ItemStack(Material.INK_SACK,ingredient.getAmount(),data);
-
-                            }
+                            ItemStack ingredient = sanitiseItemStack(shapedRecipe.getIngredientMap().get(shape[i].toCharArray()[x]));
 
                             inventoryView.setItem(i * 3 + x + 1, ingredient);
 
@@ -162,15 +142,7 @@ public class DisplayThread extends Thread {
 
                     for (ItemStack itemStack : shapelessRecipe.getIngredientList()) {
 
-                        ItemStack ingredient = generateItemStack(itemStack);
-
-                        if (ingredient.getType().toString().equalsIgnoreCase("INK_SACK")) {
-
-                            String dyeType = ingredient.getData().toString().split(" ")[0];
-                            byte data = (byte) (15 - DyeColor.valueOf(dyeType).getData());
-                            ingredient = new ItemStack(Material.INK_SACK,ingredient.getAmount(),data);
-
-                        }
+                        ItemStack ingredient = sanitiseItemStack(itemStack);
 
                         inventoryView.setItem(shapelessRecipe.getIngredientList().indexOf(itemStack)+1, ingredient);
 
@@ -214,14 +186,21 @@ public class DisplayThread extends Thread {
 
     }
 
-    public ItemStack generateItemStack(ItemStack brokenStack) {
+    public ItemStack sanitiseItemStack(ItemStack brokenStack) {
 
         if (brokenStack != null && brokenStack.getType() != null) {
 
-            ItemStack newItem = new ItemStack(brokenStack.getType());
-            newItem.setData(brokenStack.getData());
-            newItem.setAmount(brokenStack.getAmount());
-            return newItem;
+            if (brokenStack.getData() != null && brokenStack.getData().getData() < 0) {
+
+                ItemStack newItem = new ItemStack(brokenStack.getType());
+                newItem.setData(brokenStack.getData());
+                newItem.setAmount(brokenStack.getAmount());
+
+                return newItem;
+
+            }
+
+            return brokenStack;
 
         } else {
 
