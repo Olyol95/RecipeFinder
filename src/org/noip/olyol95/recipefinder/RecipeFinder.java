@@ -127,59 +127,67 @@ public class RecipeFinder extends JavaPlugin {
 
             } else {
 
-                if (args.length < 1) {
+                if (sender.hasPermission("recipe.lookup")) {
 
-                    Player player = sender.getServer().getPlayer(sender.getName());
-                    ItemStack itemStack = player.getItemInHand();
+                    if (args.length < 1) {
 
-                    if (itemStack != null) {
+                        Player player = sender.getServer().getPlayer(sender.getName());
+                        ItemStack itemStack = player.getItemInHand();
 
-                        List<Recipe> recipes = Bukkit.getRecipesFor(sender.getServer().getPlayer(sender.getName()).getItemInHand());
+                        if (itemStack != null) {
 
-                        if (recipes.size() > 0) {
+                            List<Recipe> recipes = Bukkit.getRecipesFor(sender.getServer().getPlayer(sender.getName()).getItemInHand());
 
-                            showRecipesToPlayer(player, recipes);
-                            return true;
+                            if (recipes.size() > 0) {
+
+                                showRecipesToPlayer(player, recipes);
+                                return true;
+
+                            } else {
+
+                                sender.sendMessage(ChatColor.RED + "No recipe found for: " + itemStack.getType().toString().toLowerCase().replace("_", " "));
+                                return true;
+
+                            }
 
                         } else {
 
-                            sender.sendMessage(ChatColor.RED+"No recipe found for: "+itemStack.getType().toString().toLowerCase().replace("_"," "));
-                            return true;
+                            sender.sendMessage(ChatColor.RED + "Insufficient arguments!");
+                            return false;
 
                         }
 
                     } else {
 
-                        sender.sendMessage(ChatColor.RED+"Insufficient arguments!");
-                        return false;
+                        String itemName = args[0];
+
+                        for (int i = 1; i < args.length; i++) {
+
+                            itemName = itemName + " " + args[i];
+
+                        }
+
+                        List<Recipe> recipes = getRecipesForItem(itemName);
+
+                        if (recipes.size() > 0) {
+
+                            showRecipesToPlayer(sender.getServer().getPlayer(sender.getName()), recipes);
+
+                            return true;
+
+                        } else {
+
+                            sender.sendMessage(ChatColor.RED + "No recipe found for: " + itemName);
+                            return true;
+
+                        }
+
 
                     }
 
                 } else {
 
-                    String itemName = args[0];
-
-                    for (int i = 1; i < args.length; i++) {
-
-                        itemName = itemName+" "+args[i];
-
-                    }
-
-                    List<Recipe> recipes = getRecipesForItem(itemName);
-
-                    if (recipes.size() > 0) {
-
-                        showRecipesToPlayer(sender.getServer().getPlayer(sender.getName()), recipes);
-
-                        return true;
-
-                    } else {
-
-                        sender.sendMessage(ChatColor.RED+"No recipe found for: "+itemName);
-                        return true;
-
-                    }
-
+                    sender.sendMessage(ChatColor.RED+"You do not have permission to do this!");
 
                 }
 
