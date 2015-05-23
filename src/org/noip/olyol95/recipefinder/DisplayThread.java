@@ -140,11 +140,11 @@ public class DisplayThread extends Thread {
 
                     ShapelessRecipe shapelessRecipe = (ShapelessRecipe) recipe;
 
-                    for (ItemStack itemStack : shapelessRecipe.getIngredientList()) {
+                    for (int i = 0; i < shapelessRecipe.getIngredientList().size(); i++) {
 
-                        ItemStack ingredient = sanitiseItemStack(itemStack);
+                        ItemStack ingredient = sanitiseItemStack(shapelessRecipe.getIngredientList().get(i));
 
-                        inventoryView.setItem(shapelessRecipe.getIngredientList().indexOf(itemStack)+1, ingredient);
+                        inventoryView.setItem(i+1, ingredient);
 
                     }
 

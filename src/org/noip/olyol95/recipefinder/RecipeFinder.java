@@ -321,6 +321,7 @@ public class RecipeFinder extends JavaPlugin {
         hashtable.put("netherquartz","netherQuartz");
         hashtable.put("fireball","fireCharge");
         hashtable.put("litpumpkin","jackOLantern");
+        hashtable.put("writingBook","bookAndQuill");
 
         return hashtable;
 
