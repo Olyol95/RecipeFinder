@@ -1,15 +1,11 @@
 name: RecipeFinder
-version: 1.8.4
+version: 1.2
 main: org.noip.olyol95.recipefinder.RecipeFinder
 commands:
    recipe:
       description: Look up the recipe of an item.
       usage: /recipe <item name>
 permissions:
-   recipe.*:
-      description: Gives access to all recipe commands
-         children:
-            recipe.lookup: true
    recipe.lookup:
       description: Allows you to use /recipe
       default: true

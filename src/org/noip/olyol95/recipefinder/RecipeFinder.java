@@ -1,10 +1,9 @@
 package org.noip.olyol95.recipefinder;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -13,7 +12,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.noip.olyol95.recipefinder.listeners.InventoryListener;
 import org.noip.olyol95.recipefinder.listeners.PlayerListener;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Recipe Finder plugin for Bukkit/Spigot
@@ -40,8 +42,11 @@ public class RecipeFinder extends JavaPlugin {
 
     private static final char[] capitals = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
-    Hashtable<UUID,DisplayThread> usersThreads;
-    Hashtable<String,String> replacements;
+    private Hashtable<UUID,DisplayThread> usersThreads;
+    private Hashtable<String,String> replacements;
+
+    private Method asNMSCopy;
+    private Method a;
 
     @Override
     public void onEnable() {
@@ -51,7 +56,41 @@ public class RecipeFinder extends JavaPlugin {
         usersThreads = new Hashtable<>();
         replacements = setupReplacements();
 
-        final PluginManager pluginManager = getServer().getPluginManager();
+        try {
+
+            String classPackage = "";
+            String packageVersion = "";
+
+            String[] serverPackage = getServer().getClass().getCanonicalName().split("\\.");
+
+            for (int i = 0; i < serverPackage.length-1; i++) {
+
+                if (serverPackage[i].equalsIgnoreCase("craftbukkit")) {
+
+                    packageVersion = serverPackage[i+1];
+
+                }
+
+                classPackage = classPackage + serverPackage[i] + ".";
+
+            }
+
+            Class<?> craftItemStack = Class.forName(classPackage+"inventory.CraftItemStack");
+            asNMSCopy = craftItemStack.getDeclaredMethod("asNMSCopy", ItemStack.class);
+
+            a = Class.forName("net.minecraft.server."+packageVersion+".ItemStack").getDeclaredMethod("a");
+
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+
+            e.printStackTrace();
+
+            getLogger().log(Level.WARNING, "This plugin is not compatible with your version of Bukkit/Spigot.");
+            setEnabled(false);
+            return;
+
+        }
+
+        PluginManager pluginManager = getServer().getPluginManager();
 
         pluginManager.registerEvents(new InventoryListener(), this);
         pluginManager.registerEvents(new PlayerListener(), this);
@@ -224,7 +263,18 @@ public class RecipeFinder extends JavaPlugin {
 
             Recipe recipe = recipeIterator.next();
 
-            String name = CraftItemStack.asNMSCopy(recipe.getResult()).a();
+            String name;
+
+            try {
+
+                name = (String) a.invoke(asNMSCopy.invoke(null, recipe.getResult()));
+
+            }catch (IllegalAccessException | InvocationTargetException e) {
+
+                getLogger().log(Level.SEVERE,"Recipes may not be working properly with this version of Bukkit/Spigot!");
+                return recipes;
+
+            }
 
             for (String occurance: replacements.keySet()) {
 
