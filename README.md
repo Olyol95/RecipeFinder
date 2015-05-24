@@ -6,8 +6,6 @@
 
 Now, with Recipe Finder, you can find the recipe of an item with as little effort as a single command!
 
-<hr>
-
 <h2>Current Features:</h2>
 
 <ul>
@@ -23,15 +21,11 @@ Now, with Recipe Finder, you can find the recipe of an item with as little effor
 <li>Recipes for coloured wool and dyes also supported!</li>
 </ul>
 
-<hr>
-
 <h2>Permissions:</h2>
 
 <ul>
 <li><font face="Courier New">recipe.lookup</font>: gives access to <font face="Courier New">/recipe</font>.</li>
 </ul>
-
-<hr>
 
 <h2>Features to hopefully be implemented in the future:</h2>
 
