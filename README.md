@@ -26,7 +26,7 @@ Now, with Recipe Finder, you can find the recipe of an item with as little effor
 <h2>Commands:</h2>
 <ul>
 <li>/recipe <item name>	Displays the recipes associated with the item with the given name.</li>
-<li>/recipe	Displays the recipes associated with the item in your hand.</ul>
+<li>/recipe	Displays the recipes associated with the item in your hand.</li>
 <li>/recipereload	Reloads the plugin from config.</li>
 </ul>
 
