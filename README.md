@@ -76,4 +76,6 @@ If you run into any issues with your config file or default language file, simpl
 <li>Firework recipes.</li>
 </ul>
 
+Visit the <a href="http://dev.bukkit.org/bukkit-plugins/recipe-finder/">BukkitDev project</a> page for further help/feedback.
+
 </html>
