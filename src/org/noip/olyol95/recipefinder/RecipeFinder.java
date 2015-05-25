@@ -48,6 +48,8 @@ public class RecipeFinder extends JavaPlugin {
     private Hashtable<UUID,DisplayThread> usersThreads;
     private Hashtable<String,String> synonyms;
 
+    private boolean languageEnabled = true;
+
     private Method asNMSCopy;
     private Method a;
 
@@ -65,7 +67,16 @@ public class RecipeFinder extends JavaPlugin {
         }
 
         usersThreads = new Hashtable<>();
-        synonyms = FileManager.parseLangToSynonyms();
+
+        if (languageEnabled) {
+
+            synonyms = FileManager.parseLangToSynonyms();
+
+        } else {
+
+            synonyms = new Hashtable<>();
+
+        }
 
         try {
 
@@ -237,10 +248,26 @@ public class RecipeFinder extends JavaPlugin {
 
                 } else {
 
-                    sender.sendMessage(ChatColor.RED+"You do not have permission to do this!");
+                    sender.sendMessage(ChatColor.RED+"You do not have permission to do that!");
                     return true;
 
                 }
+
+            }
+
+        } else if (command.getName().equalsIgnoreCase("recipereload")) {
+
+            if (sender.equals(Bukkit.getConsoleSender()) || sender.hasPermission("recipe.reload")) {
+
+                onDisable();
+                onEnable();
+                sender.sendMessage(ChatColor.GREEN+"Recipe Finder reloaded!");
+                return true;
+
+            } else {
+
+                sender.sendMessage(ChatColor.RED+"You do not have permission to do that!");
+                return true;
 
             }
 
@@ -290,7 +317,7 @@ public class RecipeFinder extends JavaPlugin {
             String[] itemWords = itemName.split(" ");
             String[] newWords;
 
-            if (synonyms.containsKey(name)) {
+            if (languageEnabled && synonyms.containsKey(name)) {
 
                 newWords = synonyms.get(name).split(" ");
 
@@ -353,7 +380,7 @@ public class RecipeFinder extends JavaPlugin {
 
             if (degree > 75.0) {
 
-               recipes.add(recipe);
+                recipes.add(recipe);
 
             }
 
@@ -389,5 +416,10 @@ public class RecipeFinder extends JavaPlugin {
 
     }
 
+    public void setLanguageEnabled(boolean languageEnabled) {
+
+        this.languageEnabled = languageEnabled;
+
+    }
 
 }

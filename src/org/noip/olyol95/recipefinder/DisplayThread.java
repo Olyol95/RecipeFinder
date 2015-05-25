@@ -134,7 +134,7 @@ public class DisplayThread extends Thread {
 
                     }
 
-                    inventoryView.setItem(0, shapedRecipe.getResult());
+                    inventoryView.setItem(0, sanitiseItemStack(shapedRecipe.getResult()));
 
                 } else if (recipe instanceof ShapelessRecipe) {
 
@@ -148,7 +148,7 @@ public class DisplayThread extends Thread {
 
                     }
 
-                    inventoryView.setItem(0,shapelessRecipe.getResult());
+                    inventoryView.setItem(0,sanitiseItemStack(shapelessRecipe.getResult()));
 
                 }
 

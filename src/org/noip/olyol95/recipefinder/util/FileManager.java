@@ -11,7 +11,23 @@ import java.util.Hashtable;
 import java.util.logging.Level;
 
 /**
- * Created by Ollie on 24/05/15.
+ * Recipe Finder plugin for Bukkit/Spigot
+ * Copyright (C) 2015 Oliver Youle
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author Oliver Youle
  */
 public class FileManager {
 
@@ -105,6 +121,8 @@ public class FileManager {
 
                 RecipeFinder.getPlugin().getLogger().log(Level.SEVERE,"No language file found! Lookup will likely be affected!");
 
+                RecipeFinder.getPlugin().setLanguageEnabled(false);
+
             } else {
 
                 RecipeFinder.getPlugin().getLogger().log(Level.WARNING, "Language file "+RecipeFinder.getPlugin().getLanguage()+" not found! Defaulting language to " + DEFAULT_LANG_FILE);
@@ -135,9 +153,11 @@ public class FileManager {
 
             writer.println("          RecipeFinder Configuration File");
             writer.println("---------------------------------------------------");
+            writer.println("languages enabled: true");
             writer.println("language file: "+DEFAULT_LANG_FILE);
             writer.println("---------------------------------------------------");
             writer.println("http://dev.bukkit.org/bukkit-plugins/recipe-finder/");
+            writer.println("          Copyright (C) 2015 Oliver Youle          ");
 
             writer.flush();
             writer.close();
@@ -309,7 +329,10 @@ public class FileManager {
                     if (line.startsWith("language file:")) {
 
                         RecipeFinder.getPlugin().setLanguage(line.split(":")[1].trim());
-                        break;
+
+                    } else if (line.startsWith("languages enabled:")) {
+
+                        RecipeFinder.getPlugin().setLanguageEnabled(Boolean.parseBoolean(line.split(":")[1].trim()));
 
                     }
 

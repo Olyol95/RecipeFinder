@@ -5,7 +5,13 @@ commands:
    recipe:
       description: Look up the recipe of an item.
       usage: /recipe <item name>
+   recipereload:
+      description: Reloads the plugin from the config.
+      usage: /recipereload
 permissions:
    recipe.lookup:
       description: Allows you to use /recipe
       default: true
+   recipe.reload:
+      description: Allows you to use /recipereload
+      default: op
