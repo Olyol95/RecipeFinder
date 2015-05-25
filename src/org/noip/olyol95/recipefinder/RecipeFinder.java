@@ -11,6 +11,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.noip.olyol95.recipefinder.listeners.InventoryListener;
 import org.noip.olyol95.recipefinder.listeners.PlayerListener;
+import org.noip.olyol95.recipefinder.util.FileManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,10 +41,12 @@ public class RecipeFinder extends JavaPlugin {
 
     private static RecipeFinder plugin;
 
+    private String langFile = FileManager.DEFAULT_LANG_FILE;
+
     private static final char[] capitals = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
 
     private Hashtable<UUID,DisplayThread> usersThreads;
-    private Hashtable<String,String> replacements;
+    private Hashtable<String,String> synonyms;
 
     private Method asNMSCopy;
     private Method a;
@@ -53,8 +56,16 @@ public class RecipeFinder extends JavaPlugin {
 
         plugin = this;
 
+        if (!FileManager.onEnable()) {
+
+            getLogger().log(Level.SEVERE,"Error locating binaries/config, is this plugin up to date?");
+            setEnabled(false);
+            return;
+
+        }
+
         usersThreads = new Hashtable<>();
-        replacements = setupReplacements();
+        synonyms = FileManager.parseLangToSynonyms();
 
         try {
 
@@ -84,7 +95,7 @@ public class RecipeFinder extends JavaPlugin {
 
             e.printStackTrace();
 
-            getLogger().log(Level.WARNING, "This plugin is not compatible with your version of Bukkit/Spigot.");
+            getLogger().log(Level.SEVERE, "This plugin is not compatible with your version of Bukkit/Spigot.");
             setEnabled(false);
             return;
 
@@ -107,7 +118,7 @@ public class RecipeFinder extends JavaPlugin {
         }
 
         usersThreads = null;
-        replacements = null;
+        synonyms = null;
 
         plugin = null;
 
@@ -276,38 +287,49 @@ public class RecipeFinder extends JavaPlugin {
 
             }
 
-            for (String occurance: replacements.keySet()) {
+            String[] itemWords = itemName.split(" ");
+            String[] newWords;
 
-                name = name.replaceAll(occurance,replacements.get(occurance));
+            if (synonyms.containsKey(name)) {
 
-            }
+                newWords = synonyms.get(name).split(" ");
 
-            String[] words = name.split("\\.");
+            } else {
 
-            ArrayList<String> newWords = new ArrayList<>();
+                String[] words = name.split("\\.");
 
-            for (int i = 1; i < words.length; i++) {
+                ArrayList<String> nw = new ArrayList<>();
 
-                String word = "";
+                for (int i = 1; i < words.length; i++) {
 
-                for (char c: words[i].toCharArray()) {
+                    String word = "";
 
-                    if (isCapitalChar(c)) {
+                    for (char c: words[i].toCharArray()) {
 
-                        newWords.add(word.toLowerCase());
-                        word = "";
+                        if (isCapitalChar(c)) {
+
+                            nw.add(word.toLowerCase());
+                            word = "";
+
+                        }
+
+                        word = word + c;
 
                     }
 
-                    word = word + c;
+                    nw.add(word.toLowerCase());
 
                 }
 
-                newWords.add(word.toLowerCase());
+                newWords = new String[nw.size()];
+
+                for (int i = 0; i < nw.size(); i++) {
+
+                    newWords[i] = nw.get(i);
+
+                }
 
             }
-
-            String[] itemWords = itemName.split(" ");
 
             double degree = 0;
 
@@ -341,6 +363,20 @@ public class RecipeFinder extends JavaPlugin {
 
     }
 
+    public void setLanguage(String langFile) {
+
+        getLogger().log(Level.INFO,"Language file detected: "+langFile);
+
+        this.langFile = langFile;
+
+    }
+
+    public String getLanguage() {
+
+        return langFile;
+
+    }
+
     private boolean isCapitalChar(char c) {
 
         for (char capital: capitals) {
@@ -353,37 +389,5 @@ public class RecipeFinder extends JavaPlugin {
 
     }
 
-    public Hashtable<String,String> setupReplacements() {
-
-        Hashtable<String,String> hashtable = new Hashtable<>();
-
-        hashtable.put("Light","Lamp");
-        hashtable.put("chestplateCloth","chestplateLeather");
-        hashtable.put("leggingsCloth","leggingsLeather");
-        hashtable.put("helmetCloth","helmetLeather");
-        hashtable.put("bootsCloth","bootsLeather");
-        hashtable.put("musicBlock","noteBlock");
-        hashtable.put("sparkling","glistering");
-        hashtable.put("hatchet","axe");
-        hashtable.put("lightgem","glowstone");
-        hashtable.put("cloth","wool");
-        hashtable.put("stoneSlab2","stoneSlab");
-        hashtable.put("red_sandstone","redSandstone");
-        hashtable.put("big_oak","darkOak");
-        hashtable.put("stonebricksmooth","stoneBrickSmooth");
-        hashtable.put("notGate","redstoneTorch");
-        hashtable.put("weightedPlate_heavy","ironPressurePlate");
-        hashtable.put("weightedPlate_light","goldPressurePlate");
-        hashtable.put("seeds_melon","melonSeeds");
-        hashtable.put("seeds_pumpkin","pumpkinSeeds");
-        hashtable.put("stoneMoss","mossyCobblestone");
-        hashtable.put("netherquartz","netherQuartz");
-        hashtable.put("fireball","fireCharge");
-        hashtable.put("litpumpkin","jackOLantern");
-        hashtable.put("writingBook","bookAndQuill");
-
-        return hashtable;
-
-    }
 
 }

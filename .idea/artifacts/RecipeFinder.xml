@@ -4,6 +4,9 @@
     <root id="archive" name="RecipeFinder.jar">
       <element id="module-output" name="RecipePlugin" />
       <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
+      <element id="directory" name="lang">
+        <element id="dir-copy" path="$PROJECT_DIR$/lang" />
+      </element>
     </root>
   </artifact>
 </component>
