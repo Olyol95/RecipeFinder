@@ -17,7 +17,7 @@ public class FileManager {
 
     public static String PLUGIN_DIR,CONFIG_DIR,LANG_DIR,CONFIG_FILE = "config.txt", DEFAULT_LANG_FILE = "en_US.lang", JAR_LANG_FILE=File.separator+"lang"+File.separator+DEFAULT_LANG_FILE;
 
-    private static String DEFAULT_LANG_URL = "http://download1584.mediafire.com/6x2db95rarng/a2uhlwf87cuj6cz/defaultLang.txt";
+    private static String DEFAULT_LANG_URL = "https://raw.githubusercontent.com/Olyol95/RecipeFinder/master/lang/"+DEFAULT_LANG_FILE;
 
     public static boolean onEnable() {
 
