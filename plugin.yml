@@ -1,5 +1,6 @@
 name: RecipeFinder
 version: 2.0
+author: Olyol95
 main: org.noip.olyol95.recipefinder.RecipeFinder
 commands:
    recipe:
