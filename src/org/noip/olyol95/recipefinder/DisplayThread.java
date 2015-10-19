@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,8 +29,6 @@ import java.util.List;
  * @author Oliver Youle
  */
 public class DisplayThread extends Thread {
-
-    private final static Material[] fuels = {Material.LAVA_BUCKET, Material.COAL_BLOCK, Material.BLAZE_ROD, Material.COAL, Material.LOG, Material.WOOD, Material.DAYLIGHT_DETECTOR, Material.BANNER, Material.WOOD_SWORD, Material.WOOD_STEP, Material.STICK, Material.SAPLING};
 
     Inventory inventory;
     List<Recipe> recipes;
@@ -87,10 +86,10 @@ public class DisplayThread extends Thread {
                 FurnaceRecipe furnaceRecipe = (FurnaceRecipe) recipe;
 
                 inventoryView.setItem(0, sanitiseItemStack(furnaceRecipe.getInput()));
-                inventoryView.setItem(1, new ItemStack(fuels[fuelCounter]));
+                inventoryView.setItem(1, new ItemStack(RecipeFinder.getPlugin().getFuels().get(fuelCounter)));
                 inventory.setItem(2, sanitiseItemStack(furnaceRecipe.getResult()));
 
-                if (fuelCounter + 1 == fuels.length) {
+                if (fuelCounter + 1 == RecipeFinder.getPlugin().getFuels().size()) {
 
                     fuelCounter = 0;
 

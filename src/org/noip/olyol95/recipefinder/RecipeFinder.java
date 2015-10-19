@@ -2,6 +2,7 @@ package org.noip.olyol95.recipefinder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -47,6 +48,7 @@ public class RecipeFinder extends JavaPlugin {
 
     private Hashtable<UUID,DisplayThread> usersThreads;
     private Hashtable<String,String> synonyms;
+    private ArrayList<Material> fuels;
 
     private boolean languageEnabled = true;
 
@@ -63,6 +65,14 @@ public class RecipeFinder extends JavaPlugin {
             getLogger().log(Level.SEVERE,"Error locating binaries/config, is this plugin up to date?");
             setEnabled(false);
             return;
+
+        }
+
+        fuels = new ArrayList<>();
+
+        for (Material m: Material.values()) {
+
+            if (m.isBurnable()) fuels.add(m);
 
         }
 
@@ -130,6 +140,7 @@ public class RecipeFinder extends JavaPlugin {
 
         usersThreads = null;
         synonyms = null;
+        fuels = null;
 
         plugin = null;
 
@@ -419,6 +430,12 @@ public class RecipeFinder extends JavaPlugin {
     public void setLanguageEnabled(boolean languageEnabled) {
 
         this.languageEnabled = languageEnabled;
+
+    }
+
+    public ArrayList<Material> getFuels() {
+
+        return fuels;
 
     }
 
