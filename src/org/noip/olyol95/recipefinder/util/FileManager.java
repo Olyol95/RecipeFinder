@@ -13,17 +13,17 @@ import java.util.logging.Level;
 /**
  * Recipe Finder plugin for Bukkit/Spigot
  * Copyright (C) 2015 Oliver Youle
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
-
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -31,34 +31,19 @@ import java.util.logging.Level;
  */
 public class FileManager {
 
-    public static String PLUGIN_DIR,CONFIG_DIR,LANG_DIR,CONFIG_FILE = "config.txt", DEFAULT_LANG_FILE = "en_US.lang", JAR_LANG_FILE=File.separator+"lang"+File.separator+DEFAULT_LANG_FILE;
+    public static String PLUGIN_DIR, LANG_DIR, DEFAULT_LANG_FILE = "en_US.lang", JAR_LANG_FILE = File.separator + "lang" + File.separator + DEFAULT_LANG_FILE;
 
-    private static String DEFAULT_LANG_URL = "https://raw.githubusercontent.com/Olyol95/RecipeFinder/master/lang/"+DEFAULT_LANG_FILE;
+    private static String DEFAULT_LANG_URL = "https://raw.githubusercontent.com/Olyol95/RecipeFinder/master/lang/" + DEFAULT_LANG_FILE;
 
     public static boolean onEnable() {
 
         try {
 
+            RecipeFinder.getPlugin().saveDefaultConfig();
+
             PLUGIN_DIR = Paths.get(RecipeFinder.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent() + File.separator + "RecipeFinder";
 
-            CONFIG_DIR = PLUGIN_DIR + File.separator + "config";
             LANG_DIR = PLUGIN_DIR + File.separator + "lang";
-
-            File configDir = new File(CONFIG_DIR);
-
-            if (!configDir.exists()) {
-
-                configDir.mkdirs();
-
-            }
-
-            File configFile = new File(CONFIG_DIR+File.separator+CONFIG_FILE);
-
-            if (!configFile.exists()) {
-
-                generateDefaultConfig();
-
-            }
 
             File langDir = new File(LANG_DIR);
 
@@ -68,7 +53,7 @@ public class FileManager {
 
             }
 
-            File langFile = new File(LANG_DIR+File.separator+ DEFAULT_LANG_FILE);
+            File langFile = new File(LANG_DIR + File.separator + DEFAULT_LANG_FILE);
 
             checkForNewLangFile();
 
@@ -78,7 +63,8 @@ public class FileManager {
 
             }
 
-            parseLangFromConfig();
+            RecipeFinder.getPlugin().setLanguageEnabled(RecipeFinder.getPlugin().getConfig().getBoolean("languages-enabled"));
+            RecipeFinder.getPlugin().setLanguage(RecipeFinder.getPlugin().getConfig().getString("language-file"));
 
         } catch (Exception e) {
 
@@ -90,11 +76,11 @@ public class FileManager {
 
     }
 
-    public static Hashtable<String,String> parseLangToSynonyms() {
+    public static Hashtable<String, String> parseLangToSynonyms() {
 
-        Hashtable<String,String> synonyms = new Hashtable<>();
+        Hashtable<String, String> synonyms = new Hashtable<>();
 
-        File langFile = new File(LANG_DIR+File.separator+RecipeFinder.getPlugin().getLanguage());
+        File langFile = new File(LANG_DIR + File.separator + RecipeFinder.getPlugin().getLanguage());
 
         try {
 
@@ -107,7 +93,7 @@ public class FileManager {
                 if (line.startsWith("item.") || line.startsWith("tile.")) {
 
                     String[] split = line.split("=");
-                    synonyms.put(split[0].replaceAll("\\.name",""),split[1].toLowerCase());
+                    synonyms.put(split[0].replaceAll("\\.name", ""), split[1].toLowerCase());
 
                 }
 
@@ -119,13 +105,13 @@ public class FileManager {
 
             if (RecipeFinder.getPlugin().getLanguage().equals(DEFAULT_LANG_FILE)) {
 
-                RecipeFinder.getPlugin().getLogger().log(Level.SEVERE,"No language file found! Lookup will likely be affected!");
+                RecipeFinder.getPlugin().getLogger().log(Level.SEVERE, "No language file found! Lookup will likely be affected!");
 
                 RecipeFinder.getPlugin().setLanguageEnabled(false);
 
             } else {
 
-                RecipeFinder.getPlugin().getLogger().log(Level.WARNING, "Language file "+RecipeFinder.getPlugin().getLanguage()+" not found! Defaulting language to " + DEFAULT_LANG_FILE);
+                RecipeFinder.getPlugin().getLogger().log(Level.WARNING, "Language file " + RecipeFinder.getPlugin().getLanguage() + " not found! Defaulting language to " + DEFAULT_LANG_FILE);
 
                 RecipeFinder.getPlugin().setLanguage(DEFAULT_LANG_FILE);
 
@@ -139,56 +125,21 @@ public class FileManager {
 
     }
 
-    private static void generateDefaultConfig() {
-
-        File configFile = new File(CONFIG_DIR+File.separator+CONFIG_FILE);
-
-        RecipeFinder.getPlugin().getLogger().log(Level.INFO,"Generating config file...");
-
-        try {
-
-            if (!configFile.exists()) configFile.createNewFile();
-
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(configFile)));
-
-            writer.println("          RecipeFinder Configuration File");
-            writer.println("---------------------------------------------------");
-            writer.println("languages enabled: true");
-            writer.println("language file: "+DEFAULT_LANG_FILE);
-            writer.println("---------------------------------------------------");
-            writer.println("http://dev.bukkit.org/bukkit-plugins/recipe-finder/");
-            writer.println("          Copyright (C) 2015 Oliver Youle          ");
-
-            writer.flush();
-            writer.close();
-
-            RecipeFinder.getPlugin().getLogger().log(Level.INFO,"Config file generated successfully!");
-
-        } catch (Exception e) {
-
-            RecipeFinder.getPlugin().getLogger().log(Level.SEVERE,"Failed to generate config file!");
-
-            e.printStackTrace();
-
-        }
-
-    }
-
     private static void generateDefaultLang() {
 
         try {
 
-            RecipeFinder.getPlugin().getLogger().log(Level.INFO,"Default lang file could not be downloaded.");
-            RecipeFinder.getPlugin().getLogger().log(Level.INFO,"Copying default lang file from jar");
+            RecipeFinder.getPlugin().getLogger().log(Level.INFO, "Default lang file could not be downloaded.");
+            RecipeFinder.getPlugin().getLogger().log(Level.INFO, "Copying default lang file from jar");
 
             InputStream stream = RecipeFinder.class.getResourceAsStream(JAR_LANG_FILE);
-            File langFile = new File(LANG_DIR+File.separator+DEFAULT_LANG_FILE);
+            File langFile = new File(LANG_DIR + File.separator + DEFAULT_LANG_FILE);
 
             if (!langFile.exists()) langFile.createNewFile();
 
             if (stream == null) {
 
-                RecipeFinder.getPlugin().getLogger().log(Level.SEVERE,"Default lang file not found in jar! Please nag Olyol95!");
+                RecipeFinder.getPlugin().getLogger().log(Level.SEVERE, "Default lang file not found in jar! Please nag Olyol95!");
 
             } else {
 
@@ -211,7 +162,7 @@ public class FileManager {
 
         } catch (Exception e1) {
 
-            RecipeFinder.getPlugin().getLogger().log(Level.SEVERE,"Error copying default lang file from jar!");
+            RecipeFinder.getPlugin().getLogger().log(Level.SEVERE, "Error copying default lang file from jar!");
 
         }
 
@@ -221,17 +172,17 @@ public class FileManager {
 
         try {
 
-            RecipeFinder.getPlugin().getLogger().log(Level.INFO,"Checking for language update...");
+            RecipeFinder.getPlugin().getLogger().log(Level.INFO, "Checking for language update...");
 
             URL website = new URL(DEFAULT_LANG_URL);
             ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-            FileOutputStream fos = new FileOutputStream(LANG_DIR+File.separator+"temp.lang");
+            FileOutputStream fos = new FileOutputStream(LANG_DIR + File.separator + "temp.lang");
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             rbc.close();
             fos.close();
 
-            File newLangFile = new File(LANG_DIR+File.separator+"temp.lang");
-            File langFile = new File(LANG_DIR+File.separator+DEFAULT_LANG_FILE);
+            File newLangFile = new File(LANG_DIR + File.separator + "temp.lang");
+            File langFile = new File(LANG_DIR + File.separator + DEFAULT_LANG_FILE);
 
             int newVersion = 0;
             int langVersion = 0;
@@ -304,51 +255,9 @@ public class FileManager {
 
         } catch (Exception e) {
 
-            RecipeFinder.getPlugin().getLogger().log(Level.WARNING,"Error fetching language update.");
+            RecipeFinder.getPlugin().getLogger().log(Level.WARNING, "Error fetching language update.");
 
             e.printStackTrace();
-
-        }
-
-    }
-
-    private static void parseLangFromConfig() {
-
-        File configFile = new File(CONFIG_DIR+File.separator+CONFIG_FILE);
-
-        if (configFile.exists()) {
-
-            try {
-
-                BufferedReader reader = new BufferedReader(new FileReader(configFile));
-
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-
-                    if (line.startsWith("language file:")) {
-
-                        RecipeFinder.getPlugin().setLanguage(line.split(":")[1].trim());
-
-                    } else if (line.startsWith("languages enabled:")) {
-
-                        RecipeFinder.getPlugin().setLanguageEnabled(Boolean.parseBoolean(line.split(":")[1].trim()));
-
-                    }
-
-                }
-
-                reader.close();
-
-            } catch (Exception e) {
-
-                RecipeFinder.getPlugin().getLogger().log(Level.WARNING,"Error parsing config file! Defaulting language to "+DEFAULT_LANG_FILE);
-
-            }
-
-        } else {
-
-            RecipeFinder.getPlugin().getLogger().log(Level.WARNING,"Config file not found! Defaulting language to "+DEFAULT_LANG_FILE);
 
         }
 
