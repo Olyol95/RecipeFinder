@@ -78,7 +78,7 @@ public class FileManager {
 
     public static Hashtable<String, String> parseLangToSynonyms() {
 
-        Hashtable<String, String> synonyms = new Hashtable<>();
+        Hashtable<String, String> synonyms = new Hashtable<String, String>();
 
         File langFile = new File(LANG_DIR + File.separator + RecipeFinder.getPlugin().getLanguage());
 

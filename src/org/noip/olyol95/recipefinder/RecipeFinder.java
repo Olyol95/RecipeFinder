@@ -68,7 +68,7 @@ public class RecipeFinder extends JavaPlugin {
 
         }
 
-        fuels = new ArrayList<>();
+        fuels = new ArrayList<Material>();
 
         for (Material m: Material.values()) {
 
@@ -76,7 +76,7 @@ public class RecipeFinder extends JavaPlugin {
 
         }
 
-        usersThreads = new Hashtable<>();
+        usersThreads = new Hashtable<UUID,DisplayThread>();
 
         if (languageEnabled) {
 
@@ -84,7 +84,7 @@ public class RecipeFinder extends JavaPlugin {
 
         } else {
 
-            synonyms = new Hashtable<>();
+            synonyms = new Hashtable<String,String>();
 
         }
 
@@ -112,7 +112,7 @@ public class RecipeFinder extends JavaPlugin {
 
             a = Class.forName("net.minecraft.server."+packageVersion+".ItemStack").getDeclaredMethod("a");
 
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
+        } catch (Exception e) {
 
             e.printStackTrace();
 
@@ -302,7 +302,7 @@ public class RecipeFinder extends JavaPlugin {
 
     public List<Recipe> getRecipesForItem(String itemName) {
 
-        ArrayList<Recipe> recipes = new ArrayList<>();
+        ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 
         itemName = itemName.toLowerCase();
 
@@ -318,7 +318,7 @@ public class RecipeFinder extends JavaPlugin {
 
                 name = (String) a.invoke(asNMSCopy.invoke(null, recipe.getResult()));
 
-            }catch (IllegalAccessException | InvocationTargetException e) {
+            }catch (Exception e) {
 
                 getLogger().log(Level.SEVERE,"Recipes may not be working properly with this version of Bukkit/Spigot!");
                 return recipes;
@@ -336,7 +336,7 @@ public class RecipeFinder extends JavaPlugin {
 
                 String[] words = name.split("\\.");
 
-                ArrayList<String> nw = new ArrayList<>();
+                ArrayList<String> nw = new ArrayList<String>();
 
                 for (int i = 1; i < words.length; i++) {
 
