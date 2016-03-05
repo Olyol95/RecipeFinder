@@ -31,7 +31,7 @@ import java.util.logging.Level;
  */
 public class FileManager {
 
-    public static String PLUGIN_DIR, LANG_DIR, DEFAULT_LANG_FILE = "en_US.lang", JAR_LANG_FILE = File.separator + "lang" + File.separator + DEFAULT_LANG_FILE;
+    public static String PLUGIN_DIR, LANG_DIR, DEFAULT_LANG_FILE = "en_US.default.lang", JAR_LANG_FILE = File.separator + "lang" + File.separator + DEFAULT_LANG_FILE;
 
     private static String DEFAULT_LANG_URL = "https://raw.githubusercontent.com/Olyol95/RecipeFinder/master/lang/" + DEFAULT_LANG_FILE;
 

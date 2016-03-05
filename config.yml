@@ -1,6 +1,6 @@
 # RecipeFinder Configuration File
 # http://dev.bukkit.org/bukkit-plugins/recipe-finder/
-# Copyright (C) 2015 Oliver Youle
+# Copyright (C) 2016 Oliver Youle
 
 languages-enabled: true
-language-file: en_US.lang
+language-file: en_US.default.lang

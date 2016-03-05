@@ -55,17 +55,17 @@ When you first start up the server with the plugin installed, a new folder will 
     <tr>
     <td>language file:</td>
     <td>This refers to the language file, located inside the 'RecipeFinder/lang' directory, that you wish to use for translations or renaming of lookup names</td> 
-    <td>en_US.lang</td>
+    <td>en_US.default.lang</td>
   </tr>
 </table>
 
-If you wish to change the language of the plugin, or simply rename an item, create a copy of the file called 'en_US.lang' inside the 'RecipeFinder/lang' directory (or paste in your own) and change the names of the items to whatever values you see fit. Note that many of the options contained in the lang file are redundant, you are looking for entries only beginning in tile. or item.. Once you have done this, go into 'RecipeFinder/config/config.txt' and change the language file: option to be the name of your new language file.
+If you wish to change the language of the plugin, or simply rename an item, create a copy of the file called 'en_US.default.lang' inside the 'RecipeFinder/lang' directory (or paste in your own) and change the names of the items to whatever values you see fit. Note that many of the options contained in the lang file are redundant, you are looking for entries only beginning in tile. or item.. Once you have done this, go into 'RecipeFinder/config/config.txt' and change the language file: option to be the name of your new language file.
 
 If your server is still running whilst you change the language file, you can use the /recipereload command to reload the config and update the plugin to reflect the changes that you just made.
 
 <h1>important</h1>
 
-The default en_US.lang file is maintained by the plugin and kept up to date, this means that if an update for the default language file is found <b>the plugin will replace the en_US.lang file, meaning any changes you made to that file will be removed</b>. It is therefore important that when changing the names of items, or changing the language entirely, that you <b>use a language file name other than en_US.lang</b>!
+The default en_US.default.lang file is maintained by the plugin and kept up to date, this means that if an update for the default language file is found <b>the plugin will replace the en_US.default.lang file, meaning any changes you made to that file will be removed</b>. It is therefore important that when changing the names of items, or changing the language entirely, that you <b>use a language file name other than en_US.default.lang</b>!
 
 If you run into any issues with your config file or default language file, simply delete them and run /recipereload and the plugin will generate the default files for you.
 

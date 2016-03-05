@@ -14,7 +14,6 @@ import org.noip.olyol95.recipefinder.listeners.InventoryListener;
 import org.noip.olyol95.recipefinder.listeners.PlayerListener;
 import org.noip.olyol95.recipefinder.util.FileManager;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Level;
@@ -204,11 +203,11 @@ public class RecipeFinder extends JavaPlugin {
                     if (args.length < 1) {
 
                         Player player = sender.getServer().getPlayer(sender.getName());
-                        ItemStack itemStack = player.getItemInHand();
+                        ItemStack itemStack = player.getInventory().getItemInMainHand();
 
                         if (itemStack != null) {
 
-                            List<Recipe> recipes = Bukkit.getRecipesFor(sender.getServer().getPlayer(sender.getName()).getItemInHand());
+                            List<Recipe> recipes = Bukkit.getRecipesFor(sender.getServer().getPlayer(sender.getName()).getInventory().getItemInMainHand());
 
                             if (recipes.size() > 0) {
 
