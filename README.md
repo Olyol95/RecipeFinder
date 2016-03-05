@@ -39,7 +39,7 @@ Now, with Recipe Finder, you can find the recipe of an item with as little effor
 
 <h2>Configuration:</h2>
 
-When you first start up the server with the plugin installed, a new folder will be generated in your 'plugins' directory that is called 'RecipeFinder'. Inside this folder you will find two more folders, named 'config' and 'lang' respectively. Inside the 'config' directory you will find a file called 'config.txt'. This file is used to configure the Recipe Finder plugin. Inside the file you will see the following options:
+When you first start up the server with the plugin installed, a new folder will be generated in your 'plugins' directory that is called 'RecipeFinder'. Inside this folder you will find a file called 'config.yml'. This file is used to configure the Recipe Finder plugin. Inside the file you will see the following options:
 
 <table style="width:100%">
   <tr>
