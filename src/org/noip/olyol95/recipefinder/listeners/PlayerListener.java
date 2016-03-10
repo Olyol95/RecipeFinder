@@ -8,7 +8,7 @@ import org.noip.olyol95.recipefinder.RecipeFinder;
 
 /**
  * Recipe Finder plugin for Bukkit/Spigot
- * Copyright (C) 2015 Oliver Youle
+ * Copyright (C) 2016 Oliver Youle
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
