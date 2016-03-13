@@ -125,7 +125,9 @@ public class DisplayThread extends Thread {
 
                         for (int x = 0; x < shape[i].length(); x++) {
 
-                            ItemStack ingredient = sanitiseItemStack(shapedRecipe.getIngredientMap().get(shape[i].toCharArray()[x]));
+                            ItemStack ingredient = sanitiseItemStack(
+                                    shapedRecipe.getIngredientMap().get(shape[i].toCharArray()[x])
+                            );
 
                             inventoryView.setItem(i * 3 + x + 1, ingredient);
 
