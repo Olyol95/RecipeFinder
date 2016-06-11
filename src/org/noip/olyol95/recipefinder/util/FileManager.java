@@ -2,6 +2,7 @@ package org.noip.olyol95.recipefinder.util;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.noip.olyol95.recipefinder.RecipeFinder;
+import org.noip.olyol95.recipefinder.RecipeTabCompleter;
 
 import java.io.*;
 import java.net.URL;
@@ -119,6 +120,7 @@ public class FileManager {
                         new InputStreamReader(new FileInputStream(installedManifest))
                 );
                 installedVersion = installedConfiguration.getString("version");
+                RecipeFinder.getPlugin().getLogger().info("Installed version detected: " + installedVersion);
             } catch (Exception e) {
                 RecipeFinder.getPlugin().getLogger().severe(
                         "Failed to read from local manifest! " + e.getLocalizedMessage()
@@ -131,10 +133,12 @@ public class FileManager {
                 new InputStreamReader(sourceManifestStream)
         );
         sourceVersion = sourceConfiguration.getString("version");
+        RecipeFinder.getPlugin().getLogger().info("Source version detected: " + sourceVersion);
 
         boolean hardUpdate = compareVersions(sourceVersion, installedVersion) > 0;
 
         if (hardUpdate) {
+            RecipeFinder.getPlugin().getLogger().info("An update is available!");
             try {
                 sourceConfiguration.save(installedManifest);
             } catch (Exception e) {
@@ -146,6 +150,8 @@ public class FileManager {
             for (File file : defaultLangDir.listFiles()) {
                 file.delete();
             }
+        } else {
+            RecipeFinder.getPlugin().getLogger().info("No updates found.");
         }
 
         installedConfiguration = YamlConfiguration.loadConfiguration(installedManifest);
