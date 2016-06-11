@@ -419,7 +419,6 @@ container.furnace=Uom
 container.hopper=Trächter
 container.inventory=Taske
 container.isLocked=%s is afsluoten!
-container.minecart=Kipkaor
 container.repair=Böten & Näömen
 container.repair.cost=Vötuwerungskossen: %1$s
 container.repair.expensive=To düer!

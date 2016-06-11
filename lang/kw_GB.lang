@@ -353,7 +353,6 @@ container.furnace=Fog
 container.hopper=Lammer Tra
 container.inventory=Rol
 container.isLocked=%s is locked!
-container.minecart=Balkert
 container.repair=Ewnhe ha Henwel
 container.repair.cost=Kost Hus: %1$s
 container.repair.expensive=Re Kostek!

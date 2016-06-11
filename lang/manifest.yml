@@ -1,91 +1,93 @@
 ---
 files:
-  - es_UY.lang
-  - is_IS.lang
-  - es_AR.lang
-  - he_IL.lang
-  - bg_BG.lang
-  - be_BY.lang
-  - so_SO.lang
-  - et_EE.lang
-  - fy_NL.lang
-  - af_ZA.lang
-  - tlh_AA.lang
-  - sl_SI.lang
-  - fil_PH.lang
-  - en_GB.lang
-  - ka_GE.lang
-  - ksh_DE.lang
-  - de_DE.lang
-  - br_FR.lang
-  - en_PT.lang
-  - sq_AL.lang
-  - ro_RO.lang
-  - fa_IR.lang
-  - sk_SK.lang
-  - az_AZ.lang
-  - lv_LV.lang
-  - es_MX.lang
-  - tr_TR.lang
-  - mk_MK.lang
-  - mt_MT.lang
-  - hr_HR.lang
-  - ast_ES.lang
-  - eu_ES.lang
-  - oc_FR.lang
-  - uk_UA.lang
-  - es_ES.lang
-  - th_TH.lang
-  - val_ES.lang
-  - hy_AM.lang
-  - vi_VN.lang
-  - ko_KR.lang
+  - mi_NZ.lang
+  - li_LI.lang
   - en_CA.lang
-  - ga_IE.lang
-  - it_IT.lang
-  - hi_IN.lang
-  - da_DK.lang
-  - pt_PT.lang
-  - es_VE.lang
-  - se_NO.lang
-  - ja_JP.lang
-  - el_GR.lang
-  - sr_SP.lang
+  - fy_NL.lang
+  - en_PT.lang
+  - kw_GB.lang
+  - ko_KR.lang
   - ru_RU.lang
+  - qya_AA.lang
   - lol_US.lang
-  - en_US.lang
+  - fi_FI.lang
+  - uk_UA.lang
+  - tzl_TZL.lang
+  - th_TH.lang
+  - en_UD.lang
+  - tr_TR.lang
+  - mt_MT.lang
+  - so_SO.lang
+  - en_NZ.lang
+  - mk_MK.lang
+  - nds_DE.lang
+  - se_NO.lang
+  - cs_CZ.lang
+  - bg_BG.lang
+  - is_IS.lang
+  - br_FR.lang
+  - fil_PH.lang
+  - sq_AL.lang
+  - lb_LU.lang
+  - hy_AM.lang
+  - de_DE.lang
+  - vi_VN.lang
+  - et_EE.lang
+  - pt_BR.lang
+  - es_ES.lang
+  - jbo_EN.lang
+  - es_VE.lang
+  - lt_LT.lang
+  - ast_ES.lang
   - fr_CA.lang
   - zh_TW.lang
   - eo_UY.lang
-  - lt_LT.lang
-  - li_LI.lang
-  - hu_HU.lang
+  - id_ID.lang
+  - be_BY.lang
+  - lv_LV.lang
+  - fa_IR.lang
+  - tlh_AA.lang
+  - ca_ES.lang
+  - cy_GB.lang
+  - zh_CN.lang
+  - it_IT.lang
+  - fo_FO.lang
+  - ga_IE.lang
+  - val_ES.lang
   - pl_PL.lang
   - en_AU.lang
-  - jbo_EN.lang
-  - ca_ES.lang
-  - qya_AA.lang
+  - no_NO.lang
+  - ar_SA.lang
+  - eu_ES.lang
+  - af_ZA.lang
+  - gl_ES.lang
+  - oc_FR.lang
+  - ro_RO.lang
+  - sk_SK.lang
   - ms_MY.lang
   - nn_NO.lang
-  - en_NZ.lang
-  - no_NO.lang
-  - mi_NZ.lang
-  - la_LA.lang
-  - fr_FR.lang
+  - sr_SP.lang
   - nl_NL.lang
   - gv_IM.lang
-  - kw_GB.lang
-  - nds_DE.lang
-  - pt_BR.lang
-  - zh_CN.lang
-  - fo_FO.lang
-  - lb_LU.lang
   - sv_SE.lang
-  - fi_FI.lang
-  - ar_SA.lang
-  - cy_GB.lang
-  - id_ID.lang
-  - cs_CZ.lang
-  - tzl_TZL.lang
-  - gl_ES.lang
-version: 1.9
+  - he_IL.lang
+  - en_GB.lang
+  - ka_GE.lang
+  - el_GR.lang
+  - ja_JP.lang
+  - az_AZ.lang
+  - es_AR.lang
+  - es_UY.lang
+  - hi_IN.lang
+  - hr_HR.lang
+  - hu_HU.lang
+  - es_MX.lang
+  - fr_FR.lang
+  - da_DK.lang
+  - pt_PT.lang
+  - ksh_DE.lang
+  - la_LA.lang
+  - gd_GB.lang
+  - sl_SI.lang
+  - en_US.lang
+version: 1.10
