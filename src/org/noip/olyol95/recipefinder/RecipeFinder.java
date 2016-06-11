@@ -255,6 +255,7 @@ public class RecipeFinder extends JavaPlugin {
                         } else {
 
                             player.sendMessage(ChatColor.RED + "No recipes found!");
+                            return true;
 
                         }
 
@@ -363,16 +364,17 @@ public class RecipeFinder extends JavaPlugin {
             for (String possibleMatch : possibleItemNames) {
 
                 boolean matches = true;
+                possibleMatch = possibleMatch.toLowerCase();
 
                 if (query.containsKey("-a")) {
-                    matches = matches && possibleMatch.contains(query.get("-a"));
+                    matches = matches && possibleMatch.contains(query.get("-a").toLowerCase());
                 }
                 if (query.containsKey("-e")) {
-                    matches = matches && possibleMatch.equals(query.get("-e"));
+                    matches = matches && possibleMatch.equals(query.get("-e").toLowerCase());
                 }
                 if (query.containsKey("-r")) {
                     try {
-                        matches = matches && possibleMatch.matches(query.get("-r"));
+                        matches = matches && possibleMatch.matches(query.get("-r").toLowerCase());
                     } catch (Exception e) {
                         // swallow syntax exception
                     }

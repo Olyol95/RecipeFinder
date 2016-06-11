@@ -5,7 +5,7 @@ main: org.noip.olyol95.recipefinder.RecipeFinder
 commands:
    recipe:
       description: Look up the recipe of an item.
-      usage: /recipe <item name>
+      usage: /recipe < [-e exact name] [-r regex] [-a substring] | item name > [-p page]
    recipereload:
       description: Reloads the plugin from the config.
       usage: /recipereload
