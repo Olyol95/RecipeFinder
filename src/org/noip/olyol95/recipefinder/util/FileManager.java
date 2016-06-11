@@ -88,7 +88,7 @@ public class FileManager {
 
         InputStream sourceManifestStream;
 
-        double installedVersion = 0, sourceVersion;
+        String installedVersion = "0", sourceVersion;
 
         if (fromJar) {
 
@@ -118,7 +118,7 @@ public class FileManager {
                 installedConfiguration = YamlConfiguration.loadConfiguration(
                         new InputStreamReader(new FileInputStream(installedManifest))
                 );
-                installedVersion = installedConfiguration.getDouble("version");
+                installedVersion = installedConfiguration.getString("version");
             } catch (Exception e) {
                 RecipeFinder.getPlugin().getLogger().severe(
                         "Failed to read from local manifest! " + e.getLocalizedMessage()
@@ -130,9 +130,9 @@ public class FileManager {
         sourceConfiguration = YamlConfiguration.loadConfiguration(
                 new InputStreamReader(sourceManifestStream)
         );
-        sourceVersion = sourceConfiguration.getDouble("version");
+        sourceVersion = sourceConfiguration.getString("version");
 
-        boolean hardUpdate = sourceVersion > installedVersion;
+        boolean hardUpdate = compareVersions(sourceVersion, installedVersion) > 0;
 
         if (hardUpdate) {
             try {
@@ -295,6 +295,66 @@ public class FileManager {
         Hashtable<UUID, List<String>> playerLanguages = new Hashtable<UUID, List<String>>();
 
         return playerLanguages;
+
+    }
+
+    private static int compareVersions(String newVersion, String oldVersion) {
+
+        ArrayList<Integer> tokenisedNewVersion = tokeniseVersionNumber(newVersion);
+        ArrayList<Integer> tokenisedOldVersion = tokeniseVersionNumber(oldVersion);
+
+        for (int index = 0; index < tokenisedOldVersion.size(); index++) {
+
+            Integer newToken = tokenisedNewVersion.get(index);
+            Integer oldToken = tokenisedOldVersion.get(index);
+
+            if (oldToken > newToken) { return -1; }
+            else if (oldToken < newToken) { return 1; }
+
+            if (index == tokenisedNewVersion.size() - 1) {
+
+                if (index == tokenisedOldVersion.size() - 1) {
+
+                    return 0;
+
+                } else {
+
+                    return -1;
+
+                }
+
+            } else if (index == tokenisedOldVersion.size() - 1) {
+
+                if (index == tokenisedNewVersion.size() - 1) {
+
+                    return 0;
+
+                } else {
+
+                    return 1;
+
+                }
+
+            }
+
+        }
+
+        return 0;
+
+    }
+
+    private static ArrayList<Integer> tokeniseVersionNumber(String version) {
+
+        ArrayList<Integer> tokenisedVersionNumber = new ArrayList<>();
+        tokenisedVersionNumber.add(0);
+
+        for (String sub : version.split("\\.")) {
+
+            tokenisedVersionNumber.add(Integer.parseInt(sub));
+
+        }
+
+        return tokenisedVersionNumber;
 
     }
 
