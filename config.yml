@@ -3,5 +3,5 @@
 # Copyright (C) 2016 Oliver Youle
 
 languages-enabled: true
-server-locale: en_CA
+server-locale: en_US
 language-files:
